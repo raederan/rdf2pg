@@ -12,7 +12,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+*/
+
+/*
+ * Modified by Andreas Raeder
+*/
+
 package pgraph;
 
 import java.io.BufferedWriter;
@@ -24,14 +29,14 @@ import java.util.Map;
 
 public class PropertyGraph {
 
-    HashMap<Integer, String> nodes = new HashMap();
-    HashMap<Integer, String> edges = new HashMap();
-    HashMap<Integer, String> nodeprops = new HashMap();
-    HashMap<Integer, String> edgeprops = new HashMap();
-    HashMap<Integer, Integer> sourcenodes = new HashMap();
-    HashMap<Integer, Integer> targetnodes = new HashMap();
+    HashMap<Integer, String> nodes = new HashMap<>();
+    HashMap<Integer, String> edges = new HashMap<>();
+    HashMap<Integer, String> nodeprops = new HashMap<>();
+    HashMap<Integer, String> edgeprops = new HashMap<>();
+    HashMap<Integer, Integer> sourcenodes = new HashMap<>();
+    HashMap<Integer, Integer> targetnodes = new HashMap<>();
     Integer free_id = 1;
-    HashMap<Integer,Integer> map = new HashMap();
+    HashMap<Integer,Integer> map = new HashMap<>();
 
     public PropertyGraph() {
     }
@@ -163,7 +168,7 @@ public class PropertyGraph {
             //export edges
             for (Map.Entry<Integer, String> entry : edges.entrySet()) {
                 Integer key = entry.getKey();
-                Integer eid = id;
+                // Integer eid = id;
                 id++;
                 String labels = entry.getValue();
                 String props = edgeprops.get(key);

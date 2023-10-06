@@ -26,14 +26,14 @@ import pgraph.PGNode;
 import pgraph.PGProperty;
 
 /**
- *
+ * Modified by Andreas Raeder
  * @author renzo
- */
+*/
 public class YPGWriter implements PGWriter {
 
     Writer writer;
     String filename = "output.ypg";
-    HashMap<Integer,Integer> oidmap = new HashMap();
+    HashMap<Integer,Integer> oidmap = new HashMap<>();
     int oid = 1;
 
     public YPGWriter(String _filename) {

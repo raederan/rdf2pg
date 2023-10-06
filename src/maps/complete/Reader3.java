@@ -23,12 +23,16 @@ import org.apache.jena.sparql.core.Quad;
 import org.apache.jena.vocabulary.RDF;
 import pgraph.PropertyGraph;
 
+/*
+ * Modified by Andreas Raeder
+ */
 public class Reader3 implements StreamRDF {
     int cnt = 0;
     PropertyGraph pg_instance;
     private final HashMap<String, String> prefixes;
     private int free_prefix = 1;
 
+    @SuppressWarnings("unchecked") // https://stackoverflow.com/a/262539
     public Reader3(HashMap<String, String> schema_prefixes) {
         prefixes = (HashMap<String, String>) schema_prefixes.clone();
     }
@@ -96,7 +100,7 @@ public class Reader3 implements StreamRDF {
                 if (!pg_instance.hasNode(o.hashCode())) {
                     pg_instance.addNode(o.hashCode());
                     String id = "_:b" + s.hashCode();
-                    pg_instance.addNodeProperty(o.hashCode(), "id", id);
+                    pg_instance.addNodeProperty(o.hashCode(), "bnid", id);
                 }
                 pg_instance.addEdge(triple.hashCode(), pred_name, s.hashCode(), o.hashCode());
             } else if (o.isLiteral()) {

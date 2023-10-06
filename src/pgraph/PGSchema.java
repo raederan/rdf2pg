@@ -16,7 +16,7 @@
 package pgraph;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+// import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -24,9 +24,9 @@ import java.util.Iterator;
  * @author renzo
  */
 public class PGSchema {
-    private int oid = 1;
-    private ArrayList<PGNode> nodes = new ArrayList();
-    private ArrayList<PGEdge> edges = new ArrayList();
+    // private int oid = 1;
+    private ArrayList<PGNode> nodes = new ArrayList<>();
+    private ArrayList<PGEdge> edges = new ArrayList<>();
     
     public void addPGNode(PGNode node){
         nodes.add(node);

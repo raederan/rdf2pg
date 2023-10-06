@@ -12,18 +12,24 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+*/
+
+/*
+ * Modified by Andreas Raeder
+*/
+
+import org.apache.log4j.BasicConfigurator;
 import maps.complete.CompleteMapping;
 import maps.generic.GenericMapping;
 import maps.simple.SimpleMapping;
-import pgraph.PropertyGraph;
+// import pgraph.PropertyGraph;
 
 public class RDF2PG {
 
     public static void main(String[] args) {
         long itime;
         long etime;
-        //BasicConfigurator.configure(); //to avoid log4j warning
+        BasicConfigurator.configure(); //to avoid log4j warning
         System.out.println("rdf2pg");
         System.out.println("Java app to transform an RDF database into a Property Graph database (i.e. schema and instance data).");
         if (args.length == 2) {
@@ -34,14 +40,12 @@ public class RDF2PG {
                 System.out.println("Running simple database mapping");
                 SimpleMapping smap = new SimpleMapping();
                 smap.run(input_filename);
-                System.out.println("Output: instance.ypg");
+                System.out.println("Output: instance");
             } else if (opt.compareTo("-gdm") == 0) {
                 System.out.println("Running generic database mapping");
                 GenericMapping gdm = new GenericMapping();
                 gdm.run(input_filename);
-                PropertyGraph schema = gdm.getPGSchema();
-                schema.exportAsYPG("schema.ypg");
-                System.out.println("Output: instance.ypg and schema.ypg");
+                System.out.println("Output: instance and schema");
             } else {
                 System.out.println("Invalid option");
             }
@@ -57,7 +61,7 @@ public class RDF2PG {
                 System.out.println("Running complete database mapping");
                 CompleteMapping cdm = new CompleteMapping();
                 cdm.run(rdf_filename, rdfs_filename);
-                System.out.println("Output: instance.ypg and schema.ypg");
+                System.out.println("Output: instance and schema");
             } else {
                 System.out.println("Invalid option");
             }

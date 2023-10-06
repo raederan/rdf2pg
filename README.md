@@ -1,33 +1,27 @@
 # rdf2pg
+
 A java application to transform RDF databases into Property Graph (PG) databases.
-rdf2pg implements three transformation methods described in the journal article "Mapping RDF Databases to Property Graph Databases" (IEEE Access, May 2020), which is available at https://ieeexplore.ieee.org/document/9088985
+rdf2pg implements three transformation methods described in the journal article
+"Mapping RDF Databases to Property Graph Databases"
+(IEEE Access, May 2020), which is available at [IEEE](https://ieeexplore.ieee.org/document/9088985).
 
-Usage:
+<!-- markdownlint-disable-next-line MD036 -->
+**Table of Contents**
 
-## Simple instance mapping
+- [rdf2pg](#rdf2pg)
+  - [Project Description](#project-description)
+  - [Authors and Acknowledgment](#authors-and-acknowledgment)
+  - [License](#license)
 
-$ java -jar rdf2pg -sdm <RDF_filename>
+## Project Description
 
-Output: instance.ypg (PG data)
+This project transforms RDF datasets into a CSV files for futher parsing and mass uploading rdf-like property graph data into [rapsql databases](https://github.com/OpenSemanticLab/rapsql), which builds on [Postgres](https://www.postgresql.org/) and [Apache AGE](https://age.apache.org/). A possible use case for [OpenSemanticLab](https://github.com/OpenSemanticLab).
 
-## General database mapping (schema-independent)
+## Authors and Acknowledgment
 
-$ java -jar rdf2pg -gdm <RDF_filename>
+Thanks to Prof. Renzo Angles et al. it is possible to have a basement to develop an important feature of `rapsql`.
+It is a fork of [renzoar/rdf2pg](https://github.com/renzoar/rdf2pg/tree/master/src).
 
-Output: instance.ypg (PG data) and schema.ypg (generic PG schema)
+## License
 
-## Direct database mapping (schema-dependent)
-
-$ java -jar rdf2pg -cdm <RDF_filename> <RDFS_filename>
-
-Output: instance.ypg (PG data) and schema.ypg (PG schema)
-
-## About the input and output files
-
-rdf2pg uses Apache Jena to parse RDF files. Hence, rdf2pg allows the same RDF data formats supported by Jena.  
-
-The output of rdf2pg is one or two files (depending of the mapping) containing property graph data encoded in the YARS-PG data format (https://github.com/lszeremeta/yarspg).
-
-The directory "test" contains samples of input and output files. 
-
-The rdf2pg API includes an interface named PGWriter which can be implemented to support other data formats. The use of PGWriter is very simple as it provides the methods WriteNode(PGNode node) and WriteEdge(PGEdge edge) which should be implemented with the corresponding instructions to write nodes and edges in the output file.
+This project is licenced under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.

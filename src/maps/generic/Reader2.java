@@ -24,12 +24,16 @@ import pgraph.PGNode;
 import pgraph.PGEdge;
 import writers.PGWriter;
 
+
+/*
+ * Modified by Andreas Raeder
+ */
 public class Reader2 implements StreamRDF {
     int oid = 1;
     int cnt = 0;
     PGWriter pgwriter;
     //HashSet<Integer> nodeset = new HashSet();
-    HashMap<Integer,PGNode> hash_node_map = new HashMap();
+    HashMap<Integer,PGNode> hash_node_map = new HashMap<>();
     
     
     public Reader2(PGWriter _pgwriter) {
@@ -58,7 +62,7 @@ public class Reader2 implements StreamRDF {
                 snode = new PGNode(oid++);
                 snode.addLabel("BlankNode");
                 String id = "_:b" + s.hashCode();
-                snode.addProperty("id", id);
+                snode.addProperty("bnid", id);
             } else{
                 System.out.println("Error in Reader2.java");
                 System.out.println("Invalid triple");
@@ -78,7 +82,7 @@ public class Reader2 implements StreamRDF {
                     tnode = new PGNode(oid++);
                     tnode.addLabel("BlankNode");
                     String id = "_:b" + o.hashCode();
-                    tnode.addProperty("id", id);
+                    tnode.addProperty("bnid", id);
                 }
                 hash_node_map.put(o.hashCode(), tnode);
                 pgwriter.writeNode(tnode);

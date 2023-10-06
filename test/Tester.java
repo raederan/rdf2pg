@@ -15,11 +15,14 @@
  */
 
 import maps.complete.CompleteMapping;
-import maps.generic.GenericMapping;
-import maps.simple.SimpleMapping;
-import pgraph.PropertyGraph;
-import writers.YPGWriter;
+// import maps.generic.GenericMapping;
+// import maps.simple.SimpleMapping;
+// import pgraph.PropertyGraph;
+// import writers.YPGWriter;
 
+/**
+ * Modified by Andreas Raeder
+*/
 public class Tester {
 
     public static void main(String[] args) {

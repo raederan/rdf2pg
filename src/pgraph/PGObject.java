@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/*
+ * Modified by Andreas Raeder
+*/
+
 package pgraph;
 
 import java.util.ArrayList;
@@ -21,8 +26,8 @@ import java.util.Iterator;
 public abstract class PGObject {
     
     protected int id = 0;
-    protected ArrayList<String> labels = new ArrayList();
-    protected ArrayList<PGProperty> properties = new ArrayList();
+    protected ArrayList<String> labels = new ArrayList<>();
+    protected ArrayList<PGProperty> properties = new ArrayList<>();
 
     public PGObject(){
     }

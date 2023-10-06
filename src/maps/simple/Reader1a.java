@@ -26,7 +26,7 @@ import pgraph.PGNode;
 import writers.PGWriter;
 
 /**
- *
+ * Modified by Andreas Raeder
  * @author renzo
  */
 public class Reader1a implements StreamRDF {
@@ -36,8 +36,8 @@ public class Reader1a implements StreamRDF {
     private PGWriter pgwriter;
 
     public Reader1a(PGWriter _pgwriter) {
-        pos_hash_map = new HashMap();
-        hash_node_map = new HashMap();
+        pos_hash_map = new HashMap<>();
+        hash_node_map = new HashMap<>();
         pgwriter = _pgwriter;
     }
     
@@ -50,7 +50,7 @@ public class Reader1a implements StreamRDF {
         Node s = triple.getSubject();
         int subj_pos = pos++;
         Node p = triple.getPredicate();
-        int pred_pos = pos++;
+        // int pred_pos = pos++; // unused?
         Node o = triple.getObject();
         int obj_pos = pos++;
 

@@ -1,5 +1,5 @@
 /* 
- * Copyright 2020 Renzo Angles (http://renzoangles.com/)
+ * Copyright 2023 Andreas Raeder
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,8 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+*/
 
+package writers;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -24,26 +25,30 @@ import java.util.Iterator;
 import pgraph.PGEdge;
 import pgraph.PGNode;
 import pgraph.PGProperty;
-import writers.PGWriter;
 
 /**
- * Modified by Andreas Raeder
+ * @author Andreas Raeder
  */
-public class Neo4jWriter implements PGWriter{
-
+public class RapsqlCsvWriter implements PGWriter{
     Writer writer;
     String filename = "output.ypg";
-    HashMap<Integer,Integer> oidmap = new HashMap<>();
+    HashMap<Integer,Integer> oidmap = new HashMap<Integer,Integer>();
     int oid = 1;
+    HashMap<Integer, PGNode> nodemap = new HashMap<Integer, PGNode>();
 
-    public Neo4jWriter(String _filename) {
+
+    public RapsqlCsvWriter(String _filename) {
         this.filename = _filename;
     }
 
     @Override
     public void begin() {
         try {
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "UTF-8"));
+            writer = new BufferedWriter(
+                        new OutputStreamWriter(
+                            new FileOutputStream(filename), "UTF-8"
+                        )
+                    );
         } catch (Exception ex) {
             System.out.println("Error1: " + ex.getMessage());
         }
@@ -55,15 +60,16 @@ public class Neo4jWriter implements PGWriter{
         } catch (Exception ex) {
             System.out.println("Error2: " + ex.getMessage());
         }
-
     }
 
     @Override
     public void writeNode(PGNode node) {
+        
         Integer node_id = oidmap.get(node.getId());
         if(node_id == null){
             node_id = oid;
             oidmap.put(node.getId(), oid);
+            nodemap.put(node.getId(), node);
             oid++;
         }
         
@@ -71,7 +77,7 @@ public class Neo4jWriter implements PGWriter{
         Iterator<String> it1 = node.getLabels();
         while (it1.hasNext()) {
             String label = it1.next();
-            labels = labels + ":" + label;
+            labels = label + labels + ",id";
         }
 
         int cnt = 0;
@@ -81,18 +87,17 @@ public class Neo4jWriter implements PGWriter{
             PGProperty prop = it2.next();
             cnt++;
             if (cnt < node.propertiesCounter()) {
-                props = props + prop.getLabel() + ":'" + prop.getValue() + "'" + ",";
+                props = props + prop.getLabel() + ";" + prop.getValue() + ",";
             } else {
-                props = props + prop.getLabel() + ":'" + prop.getValue() + "'";
+                props = props + prop.getLabel() + ";" + prop.getValue();
             }
         }
 
-        // CREATE (n:Person:Swedish { name: 'Andy', title: 'Developer' })
         String line;
         if(props.compareTo("")==0){
-            line = "CREATE (n" +  node.getId() + labels + ")\n";
+            line = "NODE;" + labels + ";" + node.getId() + "," + "\n";
         }else{
-            line = "CREATE (n" +  node.getId() + labels +  " {" + props + "} )\n";
+            line = "NODE;" + labels + ";" + node.getId() + "," + props + "\n";
         }
         this.writeLine(line);
     }
@@ -110,7 +115,7 @@ public class Neo4jWriter implements PGWriter{
         Iterator<String> it1 = edge.getLabels();
         while (it1.hasNext()) {
             String label = it1.next();
-            labels = labels + ":" + label;
+            labels = labels + "" + label;
         }
 
         int cnt = 0;
@@ -120,9 +125,9 @@ public class Neo4jWriter implements PGWriter{
             PGProperty prop = it2.next();
             cnt++;
             if (cnt < edge.propertiesCounter()) {
-                props = props + prop.getLabel() + ":\"" + prop.getValue() + "\"" + ",";
+                props = props + prop.getLabel() + ";" + prop.getValue() + ",";
             } else {
-                props = props + prop.getLabel() + ":\"" + prop.getValue() + "\"";
+                props = props + prop.getLabel() + ";" + prop.getValue();
             }
         }
 
@@ -142,13 +147,23 @@ public class Neo4jWriter implements PGWriter{
         snode_oid = edge.getSourceNode();
         tnode_oid = edge.getTargetNode();
         
+        PGNode snode = nodemap.get(snode_oid);
+        PGNode tnode = nodemap.get(tnode_oid);
         
-        // CREATE (a)-[r:RELTYPE]->(b)
         String line;
         if (edge.propertiesCounter() == 0) {
-            line = "CREATE (n" + snode_oid + ")-[e" + edge_id + labels + "]->(n" + tnode_oid + ")" + "\n";
+            line = "EDGE;" + labels  
+                    + ",start_id;" + snode_oid 
+                    + ",start_vertex_type;" + snode.getLabel() 
+                    + ",end_id;" + tnode_oid 
+                    + ",end_vertex_type;" + tnode.getLabel() 
+                    + labels + "\n";
         } else {
-            line = "CREATE (n" + snode_oid + ")-[e" + edge_id + labels + " {n" + props + "}]->(n" + tnode_oid + ")" + "\n";
+            line = "EDGE;" + labels 
+                    + ",start_id;" + snode_oid 
+                    + ",start_vertex_type;" + snode.getLabel() 
+                    + ",end_id;" + tnode_oid + ",end_vertex_type;" 
+                    + tnode.getLabel() + "," + props + "\n";
         }
         this.writeLine(line);
     }
@@ -161,5 +176,5 @@ public class Neo4jWriter implements PGWriter{
             System.out.println("Error: " + ex.getMessage());
         }
     }
-    
 }
+

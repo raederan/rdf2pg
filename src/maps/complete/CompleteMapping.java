@@ -28,12 +28,11 @@ import org.apache.jena.util.FileManager;
 import pgraph.PGEdge;
 import pgraph.PGNode;
 import pgraph.PGSchema;
-import pgraph.PropertyGraph;
 import writers.PGWriter;
-import writers.YPGWriter;
+import writers.RapsqlCsvWriter;
 
 /**
- *
+ * Modified by Andreas Raeder
  * @author renzo
  */
 public class CompleteMapping {
@@ -43,18 +42,24 @@ public class CompleteMapping {
     private int free_prefix = 1;
 
     public void run(String input_instance_filename, String input_schema_filename) {
-        PGWriter schema_pgwriter = new YPGWriter("schema.ypg");
-        PGWriter instance_pgwriter = new YPGWriter("instance.ypg");
+        RapsqlCsvWriter schema_pgwriter = new RapsqlCsvWriter("cdm-schema.csv");
+        RapsqlCsvWriter instance_pgwriter = new RapsqlCsvWriter("cdm-instance.csv");
         this.run(input_instance_filename, input_schema_filename, instance_pgwriter, schema_pgwriter);
     }
     
-    public void run(String input_instance_filename, String input_schema_filename, PGWriter instance_pgwriter, PGWriter schema_pgwriter) {
+    public void run(
+        String input_instance_filename, 
+        String input_schema_filename, 
+        PGWriter instance_pgwriter, 
+        PGWriter schema_pgwriter
+        ) 
+    {
         this.runSchemaMapping(input_schema_filename, schema_pgwriter);
         this.runInstanceMapping(input_instance_filename, instance_pgwriter);
     }
     
     public void runSchemaMapping(String input_schema_filename, PGWriter pgwriter) {
-        HashMap<Integer,Integer> hash_id_map = new HashMap();
+        HashMap<Integer,Integer> hash_id_map = new HashMap<Integer, Integer>();
         int oid = 1;
 
         SchemaReader schema_reader = new SchemaReader();
@@ -138,8 +143,8 @@ public class CompleteMapping {
     }
 
     public void runInstanceMapping(String input_instance_filename, PGWriter pgwriter) {
-        HashMap<Integer, Integer> pos_hash_map = new HashMap();
-        HashMap<Integer, PGNode> hash_node_map = new HashMap();
+        HashMap<Integer, Integer> pos_hash_map = new HashMap<Integer, Integer>();
+        HashMap<Integer, PGNode> hash_node_map = new HashMap<Integer, PGNode>();
 
         try {
             pgwriter.begin();
@@ -175,7 +180,7 @@ public class CompleteMapping {
 
     public CompleteMapping() {
         pg_schema = new PGSchema();
-        prefixes = new HashMap();
+        prefixes = new HashMap<>();
         prefixes.put("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf");
         prefixes.put("http://www.w3.org/2000/01/rdf-schema#", "rdfs");
         prefixes.put("http://www.w3.org/2002/07/owl#", "owl");

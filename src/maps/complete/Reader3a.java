@@ -26,17 +26,17 @@ import pgraph.PGNode;
 import writers.PGWriter;
 
 /**
- *
+ * Modified by Andreas Raeder
  * @author renzo
  */
 public class Reader3a implements StreamRDF {
 
     private int pos = 1;
-    public HashMap<Integer, Integer> pos_hash_map = new HashMap();
-    public HashMap<Integer, PGNode> hash_node_map = new HashMap();
+    public HashMap<Integer, Integer> pos_hash_map = new HashMap<>();
+    public HashMap<Integer, PGNode> hash_node_map = new HashMap<>();
     private PGWriter pgwriter;
 
-    public HashMap<String, String> prefixes = new HashMap();
+    public HashMap<String, String> prefixes = new HashMap<>();
     public int free_prefix = 1;
 
     public Reader3a(PGWriter _pgwriter) {
@@ -52,7 +52,7 @@ public class Reader3a implements StreamRDF {
         Node s = triple.getSubject();
         int subj_pos = pos++;
         Node p = triple.getPredicate();
-        int pred_pos = pos++;
+        // int pred_pos = pos++;  // unused?
         Node o = triple.getObject();
         int obj_pos = pos++;
 
@@ -98,7 +98,7 @@ public class Reader3a implements StreamRDF {
                     pos_hash_map.put(obj_pos, o.hashCode());
                     hash_node_map.put(o.hashCode(), tnode);
                     String id = "_:b" + o.hashCode();
-                    tnode.addProperty("id", id);
+                    tnode.addProperty("bnid", id);
                 } else if (o.isLiteral()) {
                     String pred_name = this.addPrefix(p.getNameSpace()) + "_" + p.getLocalName();
                     snode.addProperty(pred_name, o.getLiteralValue().toString());

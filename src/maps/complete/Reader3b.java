@@ -26,17 +26,17 @@ import pgraph.PGNode;
 import writers.PGWriter;
 
 /**
- *
+ * Modified by Andreas Raeder
  * @author renzo
  */
 public class Reader3b implements StreamRDF {
     int cnt = 0;
     private int pos = 1;
-    public HashMap<Integer, Integer> pos_hash_map = new HashMap();
-    public HashMap<Integer, PGNode> hash_node_map = new HashMap();
+    public HashMap<Integer, Integer> pos_hash_map = new HashMap<>();
+    public HashMap<Integer, PGNode> hash_node_map = new HashMap<>();
     PGWriter pgwriter;
 
-    public HashMap<String, String> prefixes = new HashMap();
+    public HashMap<String, String> prefixes = new HashMap<>();
     public int free_prefix = 1;
     
     public Reader3b(PGWriter _pgwriter) {
@@ -50,7 +50,7 @@ public class Reader3b implements StreamRDF {
     @Override
     public void triple(Triple triple) {
         cnt++;
-        Node s = triple.getSubject();
+        // Node s = triple.getSubject();  // unused?
         int subj_pos = pos++;
         Node p = triple.getPredicate();
         int pred_pos = pos++;

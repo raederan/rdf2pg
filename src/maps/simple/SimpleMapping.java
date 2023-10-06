@@ -12,21 +12,28 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+*/
+
+/*
+ * Modified by Andreas Raeder
+*/
+
 package maps.simple;
 
 import java.io.InputStream;
-import org.apache.jena.rdf.model.RDFNode;
+// import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.util.FileManager;
 import writers.PGWriter;
-import writers.YPGWriter;
+// import writers.YPGWriter;
+import writers.RapsqlCsvWriter;
 
 public class SimpleMapping {
     
     public void run(String input_instance_filename) {
-        PGWriter pgwriter = new YPGWriter("instance.ypg");
+        // PGWriter pgwriter = new YPGWriter("instance.ypg");
+        RapsqlCsvWriter pgwriter = new RapsqlCsvWriter("sdm-instance.csv");
         this.run(input_instance_filename, pgwriter);
     }
         
@@ -59,15 +66,15 @@ public class SimpleMapping {
         }
     }
     
-    private String getString(RDFNode node) {
-        if (node.isURIResource()) {
-            return node.asResource().getURI();
-        } else if (node.isAnon()) {
-            return node.asResource().getId().getLabelString();
-        } else {
-            return node.asLiteral().getString();
-        }
-    }
+    // private String getString(RDFNode node) {
+    //     if (node.isURIResource()) {
+    //         return node.asResource().getURI();
+    //     } else if (node.isAnon()) {
+    //         return node.asResource().getId().getLabelString();
+    //     } else {
+    //         return node.asLiteral().getString();
+    //     }
+    // }
     
     
 }

@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/*
+ * Modified by Andreas Raeder
+ */
+
 package maps.generic;
 
 import java.io.InputStream;
@@ -23,7 +28,8 @@ import pgraph.PGEdge;
 import pgraph.PGNode;
 import pgraph.PropertyGraph;
 import writers.PGWriter;
-import writers.YPGWriter;
+// import writers.YPGWriter;
+import writers.RapsqlCsvWriter;
 
 public class GenericMapping {
 
@@ -44,8 +50,10 @@ public class GenericMapping {
     }
 
     public void run(String inputFileName) {
-        PGWriter instance_pgwriter = new YPGWriter("instance.ypg");
-        PGWriter schema_pgwriter = new YPGWriter("schema.ypg");
+        // PGWriter instance_pgwriter = new YPGWriter("instance.ypg");
+        // PGWriter schema_pgwriter = new YPGWriter("schema.ypg");
+        RapsqlCsvWriter instance_pgwriter = new RapsqlCsvWriter("gdm-instance.csv");
+        RapsqlCsvWriter schema_pgwriter = new RapsqlCsvWriter("gdm-schema.csv");
         this.run(inputFileName, instance_pgwriter, schema_pgwriter);
     }
 
@@ -80,7 +88,7 @@ public class GenericMapping {
             
             PGNode bnode = new PGNode(2);
             bnode.addLabel("BlankNode");
-            bnode.addProperty("id", "String");
+            bnode.addProperty("bnid", "String");
             pgwriter.writeNode(bnode);
 
             PGNode lnode = new PGNode(3);
