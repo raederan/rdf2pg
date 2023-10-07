@@ -52,8 +52,8 @@ public class GenericMapping {
     public void run(String inputFileName) {
         // PGWriter instance_pgwriter = new YPGWriter("instance.ypg");
         // PGWriter schema_pgwriter = new YPGWriter("schema.ypg");
-        RapsqlCsvWriter instance_pgwriter = new RapsqlCsvWriter("gdm-instance.csv");
-        RapsqlCsvWriter schema_pgwriter = new RapsqlCsvWriter("gdm-schema.csv");
+        RapsqlCsvWriter instance_pgwriter = new RapsqlCsvWriter("instance.csv");
+        RapsqlCsvWriter schema_pgwriter = new RapsqlCsvWriter("schema.csv");
         this.run(inputFileName, instance_pgwriter, schema_pgwriter);
     }
 
