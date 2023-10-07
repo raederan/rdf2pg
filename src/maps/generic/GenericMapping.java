@@ -50,8 +50,10 @@ public class GenericMapping {
     }
 
     public void run(String inputFileName) {
-        RapsqlCsvWriter instance_pgwriter = new RapsqlCsvWriter(inputFileName.replace(".nt", "-i.ypg"));
-        RapsqlCsvWriter schema_pgwriter = new RapsqlCsvWriter(inputFileName.replace(".nt", "-s.ypg"));
+        // RapsqlCsvWriter instance_pgwriter = new RapsqlCsvWriter(inputFileName.replace(".nt", "-i.ypg"));
+        // RapsqlCsvWriter schema_pgwriter = new RapsqlCsvWriter(inputFileName.replace(".nt", "-s.ypg"));
+        RapsqlCsvWriter instance_pgwriter = new RapsqlCsvWriter("instance.ypg");
+        RapsqlCsvWriter schema_pgwriter = new RapsqlCsvWriter("instance.ypg");
         this.run(inputFileName, instance_pgwriter, schema_pgwriter);
     }
 
