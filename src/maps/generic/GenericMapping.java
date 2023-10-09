@@ -29,7 +29,8 @@ import pgraph.PGNode;
 import pgraph.PropertyGraph;
 import writers.PGWriter;
 // import writers.YPGWriter;
-import writers.RapsqlCsvWriter;
+// import writers.RapsqlCsvWriter;
+import writers.RapsqlCsvWriter2;
 
 public class GenericMapping {
 
@@ -52,8 +53,8 @@ public class GenericMapping {
     public void run(String inputFileName) {
         // RapsqlCsvWriter instance_pgwriter = new RapsqlCsvWriter(inputFileName.replace(".nt", "-i.ypg"));
         // RapsqlCsvWriter schema_pgwriter = new RapsqlCsvWriter(inputFileName.replace(".nt", "-s.ypg"));
-        RapsqlCsvWriter instance_pgwriter = new RapsqlCsvWriter("instance.ypg");
-        RapsqlCsvWriter schema_pgwriter = new RapsqlCsvWriter("instance.ypg");
+        RapsqlCsvWriter2 instance_pgwriter = new RapsqlCsvWriter2("nodes.ypg", "edges.ypg");
+        RapsqlCsvWriter2 schema_pgwriter = new RapsqlCsvWriter2("nodes_schema.ypg", "edges_schema.ypg");
         this.run(inputFileName, instance_pgwriter, schema_pgwriter);
     }
 
@@ -131,7 +132,5 @@ public class GenericMapping {
         } catch (Exception ex) {
             System.out.println("Error: " + ex.getMessage());
         }
-
     }
-
 }
