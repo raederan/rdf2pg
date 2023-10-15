@@ -14,16 +14,17 @@
  * limitations under the License.
 */
 
-package de.rapsql.rdf2pg;
+package de.rapsql.rdf2pg.writers;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
+
 import de.rapsql.rdf2pg.pgraph.PGEdge;
 import de.rapsql.rdf2pg.pgraph.PGNode;
 import de.rapsql.rdf2pg.pgraph.PGProperty;
-import de.rapsql.rdf2pg.writers.PGWriter;
 
 /**
  * @author Andreas Raeder
@@ -37,9 +38,6 @@ public class RapsqlWriter implements PGWriter {
   int oid = 1;
   HashMap<Integer, PGNode> nodemap = new HashMap<Integer, PGNode>();
 
-  public ArrayList<String> getLines() {
-    return lines;
-  }
 
   private void writeLine(String line) {
     lines.add(line);
