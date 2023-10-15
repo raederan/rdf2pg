@@ -89,7 +89,7 @@ public class Reader2 implements StreamRDF {
             }
             PGEdge edge = new PGEdge(oid++,snode.getId(),tnode.getId());
             edge.addLabel("ObjectProperty");
-            edge.addProperty("type", p.getURI());
+            edge.addProperty("iri", p.getURI());
             pgwriter.writeEdge(edge);
         } else {
             //the object is a literal 
@@ -101,7 +101,7 @@ public class Reader2 implements StreamRDF {
             
             PGEdge edge = new PGEdge(oid++,snode.getId(),tnode.getId());
             edge.addLabel("DatatypeProperty");
-            edge.addProperty("type", p.getURI());
+            edge.addProperty("iri", p.getURI());
             pgwriter.writeEdge(edge);
         }
     }
