@@ -27,3 +27,7 @@ temp/
 /build/
 # /dist/
 /dist/
+/target/
+migration
+.vscode
+src/test/resources

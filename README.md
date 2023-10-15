@@ -12,6 +12,8 @@ rdf2pg implements three transformation methods described in the journal article
   - [Project Description](#project-description)
   - [Authors and Acknowledgment](#authors-and-acknowledgment)
   - [License](#license)
+  - [Maven Migration](#maven-migration)
+  - [TODO](#todo)
 
 ## Project Description
 
@@ -25,3 +27,15 @@ It is a fork of [renzoar/rdf2pg](https://github.com/renzoar/rdf2pg/tree/master/s
 ## License
 
 This project is licenced under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## Maven Migration
+
+1. Create new Java project using maven-archetype-quickstart
+2. Configure `pom.xml` and add dependencies
+3. Move `src` to `src/main/java/rapsql/rdf2pg`
+4. Move `test` to `src/test/java/rapsql/rdf2pg`
+5. Add and change `import` and `package` statements for each java file
+
+## TODO
+
+- Ant to Maven migration of complete database mapping
