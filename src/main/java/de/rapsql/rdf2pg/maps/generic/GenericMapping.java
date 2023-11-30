@@ -20,10 +20,17 @@
 
 package de.rapsql.rdf2pg.maps.generic;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import org.apache.jena.riot.lang.LabelToNode;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.Lang;
-// import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFParser;
+import org.apache.jena.riot.system.FactoryRDF;
+import org.apache.jena.riot.system.FactoryRDFStd;
 import org.apache.jena.riot.system.stream.StreamManager;
 // import org.apache.jena.util.FileManager;
 import de.rapsql.rdf2pg.pgraph.PGEdge;
@@ -63,6 +70,115 @@ public class GenericMapping {
     public void run(String inputFileName, PGWriter instance_pgwriter, PGWriter schema_pgwriter) {
         this.runInstanceMapping(inputFileName, instance_pgwriter);
         this.runSchemaMapping(schema_pgwriter);
+    }
+
+    // $issue: each parser run creates new blanknode ids
+    // https://stackoverflow.com/a/65060705
+    public Model runModelMapping4(String inputFileName, PGWriter instance_pgwriter) {
+        Model model = ModelFactory.createDefaultModel();
+        try {
+            instance_pgwriter.begin();
+            // define input
+            InputStream in= RDFDataMgr.open( inputFileName );
+            if (in == null) {
+                throw new IllegalArgumentException("File: " + inputFileName + " not found");
+            } 
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            in.transferTo(baos);
+            InputStream in1 = new ByteArrayInputStream(baos.toByteArray()); 
+            InputStream in2 = new ByteArrayInputStream(baos.toByteArray()); 
+            FactoryRDF factory = new FactoryRDFStd(LabelToNode.createUseLabelAsGiven());
+            RDFParser.source(in1).factory(factory).lang(Lang.TTL).parse(new Reader2(instance_pgwriter));
+            model = RDFParser.source(in2).factory(factory).lang(Lang.TTL).toModel();
+            instance_pgwriter.end();
+            
+        } catch (Exception ex) {
+            System.out.println("Error runModelMapping: " + ex.getMessage());
+        }
+        return model;
+    }
+    // // $issue: each parser run creates new blanknode ids
+    // // https://stackoverflow.com/a/65060705
+    // public void runModelMapping(Model model, PGWriter instance_pgwriter) {
+    //     try {
+    //         // handle model instead of file
+    //         Reader2 reader = new Reader2(instance_pgwriter);
+    //         System.out.println("\nDEBUG RDF2PG runModelMapping MODEL:\n" + model + "\n");
+    //         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    //         instance_pgwriter.begin();
+
+    //         model.write(outputStream, Lang.TTL.getName());
+    //         InputStream in = new ByteArrayInputStream(outputStream.toByteArray());
+
+    //         FactoryRDF factory = new FactoryRDFStd(LabelToNode.createUseLabelAsGiven());
+    //         RDFParser.source(in).factory(factory).lang(Lang.TTL).parse(reader);
+
+    //         instance_pgwriter.end();
+    //     } catch (Exception ex) {
+    //         System.out.println("Error runModelMapping: " + ex.getMessage());
+    //     }
+    // }
+
+    public void runModelMapping2(Model model, PGWriter instance_pgwriter) {
+        try {
+            // handle model instead of file
+            Reader2 reader = new Reader2(instance_pgwriter);
+            System.out.println("\nDEBUG RDF2PG runModelMapping MODEL:\n" + model + "\n");
+            
+            // Create an OutputStream
+
+
+            instance_pgwriter.begin();
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            model.write(outputStream, Lang.TTL.getName());
+            InputStream in = new ByteArrayInputStream(outputStream.toByteArray());
+            RDFParser.source(in).lang(Lang.TTL).parse(reader);
+            
+
+            // System.out.println("\nDEBUG RDF2PG runModelMapping TTL:\n" + ttlString + "\n");
+            // RDFParser.fromString(ttlString).lang(Lang.TTL).parse(reader);
+            instance_pgwriter.end();
+
+
+        } catch (Exception ex) {
+            System.out.println("Error runModelMapping: " + ex.getMessage());
+        }
+    }
+
+
+    public Model runModelMapping(String inputFileName, PGWriter instance_pgwriter) {
+        // create default model factory
+        Model model = ModelFactory.createDefaultModel();
+        try {
+            // handle model instead of file
+            InputStream in = RDFDataMgr.open( inputFileName );
+            if (in == null) {
+                throw new IllegalArgumentException("File: " + inputFileName + " not found");
+            }   
+
+            instance_pgwriter.begin();
+            Reader2 reader = new Reader2(instance_pgwriter);
+            // System.out.println("\nDEBUG RDF2PG runModelMapping INPUTSTREAM:\n" + in + "\n");
+            
+            RDFParser parser = RDFParser.source(in).lang(Lang.TTL).build();
+            parser.parse(reader);
+            
+            
+            FactoryRDF factory = new FactoryRDFStd(LabelToNode.createUseLabelAsGiven());
+            
+            String rdf_str = reader.getRDFString();
+            System.out.println("\nDEBUG RDF2PG runModelMapping RDFSTRING:\n" + rdf_str + "\n");
+            model = RDFParser.fromString(rdf_str).factory(factory).lang(Lang.TTL).toModel();
+            System.out.println("\nDEBUG RDF2PG runModelMapping MODEL:\n" + model + "\n");
+            
+            // RDFParser.source(in).lang(Lang.TTL).parse(reader);
+            instance_pgwriter.end();
+
+        } catch (Exception ex) {
+            System.out.println("Error runModelMapping: " + ex.getMessage());
+        }
+        return model;
     }
 
     public void runInstanceMapping(String inputFileName, PGWriter pgwriter) {

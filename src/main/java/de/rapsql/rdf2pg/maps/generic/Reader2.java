@@ -15,7 +15,9 @@
  */
 package de.rapsql.rdf2pg.maps.generic;
 
+import java.io.OutputStream;
 import java.util.HashMap;
+
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.riot.system.StreamRDF;
@@ -31,13 +33,18 @@ import de.rapsql.rdf2pg.writers.PGWriter;
 public class Reader2 implements StreamRDF {
     int oid = 1;
     int cnt = 0;
+    OutputStream out;
     PGWriter pgwriter;
     //HashSet<Integer> nodeset = new HashSet();
     HashMap<Integer,PGNode> hash_node_map = new HashMap<>();
-    
+    String rdf_str = "";
     
     public Reader2(PGWriter _pgwriter) {
         this.pgwriter = _pgwriter;
+    }
+
+    public String getRDFString() {
+        return rdf_str;
     }
 
     @Override
@@ -46,6 +53,8 @@ public class Reader2 implements StreamRDF {
 
     @Override
     public void triple(Triple triple) {
+        // System.out.println("DEBUG TRIPLE " + triple.toString());
+        
         cnt++;
         Node s = triple.getSubject();
         Node p = triple.getPredicate();
@@ -53,16 +62,27 @@ public class Reader2 implements StreamRDF {
         //System.out.println(this.getNodeString(s) + " - " + this.getNodeString(p) + " - " + this.getNodeString(o));
         
         PGNode snode = hash_node_map.get(s.hashCode());
+
+        rdf_str += "\n";
+
+        
         if (snode == null) {
             if (s.isURI()) {
                 snode = new PGNode(oid++);
                 snode.addLabel("Resource");
                 snode.addProperty("iri", s.getURI());
+
+                rdf_str += s.getURI() + "\n";
             } else if(s.isBlank()) {
                 snode = new PGNode(oid++);
                 snode.addLabel("BlankNode");
-                String id = "_:b" + s.hashCode();
-                snode.addProperty("bnid", id);
+                // get blanknode id directly instead of hashcode
+                // String id = "_:b" + s.hashCode();
+                // System.out.println("DEBUG BN SUB bnid: " + s.getBlankNodeId().toString());
+                // System.out.println("DEBUG BN SUB bnLbl: " + s.getBlankNodeLabel());
+                snode.addProperty("bnid", s.getBlankNodeId().toString());
+
+                rdf_str += "_:" + s.getBlankNodeId().toString() + " ";
             } else{
                 System.out.println("Error in Reader2.java");
                 System.out.println("Invalid triple");
@@ -78,24 +98,37 @@ public class Reader2 implements StreamRDF {
                     tnode = new PGNode(oid++);
                     tnode.addLabel("Resource");
                     tnode.addProperty("iri", o.getURI());
+
+                    rdf_str += "_:" + o.getURI() + " ";
                 } else {
                     tnode = new PGNode(oid++);
                     tnode.addLabel("BlankNode");
-                    String id = "_:b" + o.hashCode();
-                    tnode.addProperty("bnid", id);
+                    // get blanknode id directly instead of hashcode
+                    // String id = "_:b" + o.hashCode();
+                    // System.out.println("DEBUG BN OBJ bnid: " + o.getBlankNodeId().toString());
+                    tnode.addProperty("bnid", o.getBlankNodeId().toString());
+
+                    rdf_str += o.getBlankNodeId().toString() + "\n";
                 }
                 hash_node_map.put(o.hashCode(), tnode);
                 pgwriter.writeNode(tnode);
+
             }
             PGEdge edge = new PGEdge(oid++,snode.getId(),tnode.getId());
             edge.addLabel("ObjectProperty");
             edge.addProperty("iri", p.getURI());
             pgwriter.writeEdge(edge);
+
+            rdf_str += p.getURI() + " ";
+
         } else {
             //the object is a literal 
             PGNode tnode = new PGNode(oid++);
             tnode.addLabel("Literal");
-            tnode.addProperty("value", o.getLiteral().getValue().toString());
+            // tnode.addProperty("value", o.getLiteral().getValue().toString()); // does not work for special type
+            tnode.addProperty("value", o.getLiteral().getLexicalForm()); // fix for special type
+            // System.out.println("DEBUG TYPE Literal value string: " + o.getLiteral().getValue().toString());
+            // System.out.println("DEBUG TYPE Literal lexform: " + o.getLiteral().getLexicalForm());
             tnode.addProperty("type", o.getLiteral().getDatatypeURI());
             pgwriter.writeNode(tnode);
             
@@ -103,6 +136,9 @@ public class Reader2 implements StreamRDF {
             edge.addLabel("DatatypeProperty");
             edge.addProperty("iri", p.getURI());
             pgwriter.writeEdge(edge);
+
+            // rdf_str += o.getLiteral().getLexicalForm() + "^^" + o.getLiteral().getDatatypeURI() + " .";
+            rdf_str += "<" + p.getURI() + "> \"" + o.getLiteral().getLexicalForm() + "\" .";
         }
     }
 
@@ -118,12 +154,14 @@ public class Reader2 implements StreamRDF {
 
     @Override
     public void prefix(String string, String string1) {
-        //System.out.println("prefix");
+        // System.out.println("prefix");
     }
+
 
     @Override
     public void finish() {
-        System.out.println("Number of RDF triples processed: " + cnt);
+        // System.out.println("Number of RDF triples processed: " + cnt);
+        // TODO: COPY READER FOR BENCHMARK TO DISPLAY NUMBER OF TRIPLES
     }
 
 }

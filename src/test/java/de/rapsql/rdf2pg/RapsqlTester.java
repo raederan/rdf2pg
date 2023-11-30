@@ -23,12 +23,12 @@ import de.rapsql.rdf2pg.maps.generic.GenericMapping;
 
 public class RapsqlTester {
   public static void main(String[] args) {
-
+    String inputFileName = "src/test/resources/sp100.nt";
     System.out.println("RapsqlWriter: Generic database mapping");
     RapsqlWriter instance_pgwriter = new RapsqlWriter();
     RapsqlWriter schema_pgwriter = new RapsqlWriter();
     GenericMapping gdm = new GenericMapping();
-    gdm.run("src/test/resources/rdf-instance.ttl",instance_pgwriter,schema_pgwriter);
+    gdm.run(inputFileName,instance_pgwriter,schema_pgwriter);
     ArrayList<String> lines;
     lines = instance_pgwriter.getLines();
     System.out.println("Instance:" + lines);
