@@ -31,3 +31,5 @@ temp/
 migration
 .vscode
 src/test/resources
+*.csv
+*.n3

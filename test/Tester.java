@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import maps.complete.CompleteMapping;
+// import maps.complete.CompleteMapping;
 import maps.generic.GenericMapping;
-import maps.simple.SimpleMapping;
-import pgraph.PropertyGraph;
-import writers.YPGWriter;
+// import maps.simple.SimpleMapping;
+// import pgraph.PropertyGraph;
+// import writers.YPGWriter;
 
 /**
  * Modified by Andreas Raeder
