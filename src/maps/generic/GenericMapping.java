@@ -56,7 +56,9 @@ public class GenericMapping {
                 "nlit.csv",
                 "nbn.csv",
                 "eop.csv",
-                "edtp.csv"
+                "edtp.csv",
+                "eop_part.txt",
+                "edtp_part.txt"
             );
         RapsqlSplitWriter schema_pgwriter = 
             new RapsqlSplitWriter(
@@ -64,7 +66,9 @@ public class GenericMapping {
                 "nlit_schema.csv",
                 "nbn_schema.csv",
                 "eop_schema.csv",
-                "edtp_schema.csv"
+                "edtp_schema.csv",
+                "eop_part_schema.txt",
+                "edtp_part_schema.txt"
             );
         this.run(inputFileName, instance_pgwriter, schema_pgwriter);
     }

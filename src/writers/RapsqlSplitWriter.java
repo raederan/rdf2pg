@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 */
-package writers;
+
+
+package writers; // Include for writer integration
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -21,9 +23,12 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ArrayList;
 import pgraph.PGEdge;
 import pgraph.PGNode;
 import pgraph.PGProperty;
+// import writers.PGWriter; // Extend for writer integration
+
 
 /**
  * @author Andreas Raeder
@@ -34,28 +39,37 @@ public class RapsqlSplitWriter implements PGWriter{
     Writer nbn_writer;
     Writer eop_writer;
     Writer edtp_writer;
+    Writer eop_part_writer;
+    Writer edtp_part_writer;
     String filename_nres;
     String filename_nlit;
     String filename_nbn;
     String filename_eop;
     String filename_edtp;
+    String filename_eop_part;
+    String filename_edtp_part;
     HashMap<Integer,Integer> oidmap = new HashMap<Integer,Integer>();
     int oid = 1;
     HashMap<Integer, PGNode> nodemap = new HashMap<Integer, PGNode>();
-
+    // define list of unique edge iri's
+    ArrayList<String> edge_iri_list = new ArrayList<String>();
 
     public RapsqlSplitWriter(
         String _filename_nres,
         String _filename_nlit,
         String _filename_nbn,
         String _filename_eop,
-        String _filename_edtp
+        String _filename_edtp,
+        String _filename_eop_part,
+        String _filename_edtp_part
     ) {
         this.filename_nres = _filename_nres;
         this.filename_nlit = _filename_nlit;
         this.filename_nbn = _filename_nbn;
         this.filename_eop = _filename_eop;
         this.filename_edtp = _filename_edtp;
+        this.filename_eop_part = _filename_eop_part;
+        this.filename_edtp_part = _filename_edtp_part;
     }
 
     @Override
@@ -95,7 +109,18 @@ public class RapsqlSplitWriter implements PGWriter{
         } catch (Exception ex) {
             System.out.println("Error1: " + ex.getMessage());
         }
-        
+        try {
+            eop_part_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename_eop_part), "UTF-8"));
+            // ObjectProperty header
+        } catch (Exception ex) {
+            System.out.println("Error1: " + ex.getMessage());
+        }
+        try {
+            edtp_part_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename_edtp_part), "UTF-8"));
+            // DatatypeProperty header
+        } catch (Exception ex) {
+            System.out.println("Error1: " + ex.getMessage());
+        }
     }
     // private void writeLine(String line, Boolean isNode) {
     private void writeLine(String line, String selector) {
@@ -111,6 +136,10 @@ public class RapsqlSplitWriter implements PGWriter{
                 eop_writer.write(line);
             } else if (selector.equals("DatatypeProperty")) {
                 edtp_writer.write(line);
+            } else if (selector.equals("ObjectPropertyPart")) {
+                eop_part_writer.write(line);
+            } else if (selector.equals("DatatypePropertyPart")) {
+                edtp_part_writer.write(line);
             }
         } catch (Exception ex) {
             System.out.println("Error2: " + ex.getMessage());
@@ -224,7 +253,15 @@ public class RapsqlSplitWriter implements PGWriter{
                     + tnode.getLabel() + ","
                     + props + "\n";
         }
-        this.writeLine(line, edge.getLabel());
+
+        // add unique edge iri's to list and write to file
+        if (!edge_iri_list.contains(props)) {
+            edge_iri_list.add(props);
+            this.writeLine(props + "\n", labels + "Part");
+            // System.out.println("Edge IRI: " + props);
+            // System.out.println("Edge Label: " + labels);
+        }
+        this.writeLine(line, labels);
     }
 
     @Override
@@ -235,6 +272,8 @@ public class RapsqlSplitWriter implements PGWriter{
             nbn_writer.close();
             eop_writer.close();
             edtp_writer.close();
+            eop_part_writer.close();
+            edtp_part_writer.close();
         } catch (Exception ex) {
             System.out.println("Error: " + ex.getMessage());
         }
