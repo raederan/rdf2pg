@@ -61,8 +61,7 @@ public class Reader2 implements StreamRDF {
             } else if(s.isBlank()) {
                 snode = new PGNode(oid++);
                 snode.addLabel("BlankNode");
-                String id = "_:b" + s.hashCode();
-                snode.addProperty("bnid", id);
+                snode.addProperty("bnid", s.getBlankNodeId().toString());
             } else{
                 System.out.println("Error in Reader2.java");
                 System.out.println("Invalid triple");
@@ -81,8 +80,7 @@ public class Reader2 implements StreamRDF {
                 } else {
                     tnode = new PGNode(oid++);
                     tnode.addLabel("BlankNode");
-                    String id = "_:b" + o.hashCode();
-                    tnode.addProperty("bnid", id);
+                    tnode.addProperty("bnid", o.getBlankNodeId().toString()); 
                 }
                 hash_node_map.put(o.hashCode(), tnode);
                 pgwriter.writeNode(tnode);
@@ -95,7 +93,8 @@ public class Reader2 implements StreamRDF {
             //the object is a literal 
             PGNode tnode = new PGNode(oid++);
             tnode.addLabel("Literal");
-            tnode.addProperty("value", o.getLiteral().getValue().toString());
+            // fix literal for special type
+            tnode.addProperty("value", o.getLiteral().getLexicalForm()); 
             tnode.addProperty("type", o.getLiteral().getDatatypeURI());
             pgwriter.writeNode(tnode);
             
