@@ -15,10 +15,10 @@
  */
 
 import maps.complete.CompleteMapping;
-// import maps.generic.GenericMapping;
-// import maps.simple.SimpleMapping;
-// import pgraph.PropertyGraph;
-// import writers.YPGWriter;
+import maps.generic.GenericMapping;
+import maps.simple.SimpleMapping;
+import pgraph.PropertyGraph;
+import writers.YPGWriter;
 
 /**
  * Modified by Andreas Raeder
@@ -33,15 +33,15 @@ public class Tester {
         sim.run("instance.nt");
         */
 
-        /*
+        
         System.out.println("Generic database mapping");
         GenericMapping gdm = new GenericMapping();
-        gdm.run("instance.nt");
-        */
+        gdm.run("sp100.n3");
         
-        System.out.println("Complete database mapping");
-        CompleteMapping cdm = new CompleteMapping();
-        cdm.run("instance.nt", "schema.ttl");
+        
+        // System.out.println("Complete database mapping");
+        // CompleteMapping cdm = new CompleteMapping();
+        // cdm.run("instance.nt", "schema.ttl");
 
         System.out.println("OK");
     }

@@ -28,9 +28,8 @@ import pgraph.PGEdge;
 import pgraph.PGNode;
 import pgraph.PropertyGraph;
 import writers.PGWriter;
-// import writers.YPGWriter;
-// import writers.RapsqlCsvWriter;
-import writers.RapsqlCsvWriter2;
+
+import writers.RapsqlSplitWriter;
 
 public class GenericMapping {
 
@@ -51,10 +50,22 @@ public class GenericMapping {
     }
 
     public void run(String inputFileName) {
-        // RapsqlCsvWriter instance_pgwriter = new RapsqlCsvWriter(inputFileName.replace(".nt", "-i.ypg"));
-        // RapsqlCsvWriter schema_pgwriter = new RapsqlCsvWriter(inputFileName.replace(".nt", "-s.ypg"));
-        RapsqlCsvWriter2 instance_pgwriter = new RapsqlCsvWriter2("nodes.ypg", "edges.ypg");
-        RapsqlCsvWriter2 schema_pgwriter = new RapsqlCsvWriter2("nodes_schema.ypg", "edges_schema.ypg");
+        RapsqlSplitWriter instance_pgwriter = 
+            new RapsqlSplitWriter(
+                "nres.csv",
+                "nlit.csv",
+                "nbn.csv",
+                "eop.csv",
+                "edtp.csv"
+            );
+        RapsqlSplitWriter schema_pgwriter = 
+            new RapsqlSplitWriter(
+                "nres_schema.csv",
+                "nlit_schema.csv",
+                "nbn_schema.csv",
+                "eop_schema.csv",
+                "edtp_schema.csv"
+            );
         this.run(inputFileName, instance_pgwriter, schema_pgwriter);
     }
 
