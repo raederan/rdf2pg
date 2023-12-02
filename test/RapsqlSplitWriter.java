@@ -146,6 +146,10 @@ public class RapsqlSplitWriter implements PGWriter{
         while (it2.hasNext()) {
             PGProperty prop = it2.next();
             cnt++;
+            // ensure values with commas are quoted
+            if (prop.getValue().contains(",")) {
+                prop.setValue("\"" + prop.getValue() + "\"");
+            }
             if (cnt < node.propertiesCounter()) {
                 props = props + prop.getValue() + ",";
             } else {

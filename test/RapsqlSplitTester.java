@@ -31,7 +31,7 @@ public class RapsqlSplitTester {
       );
 
     GenericMapping gdm = new GenericMapping();
-    gdm.run("sp100.n3",instance_pgwriter,schema_pgwriter);
+    gdm.run("sp100k.n3",instance_pgwriter,schema_pgwriter);
     
   }
 }
