@@ -111,13 +111,11 @@ public class RapsqlSplitWriter implements PGWriter{
         }
         try {
             eop_part_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename_eop_part), "UTF-8"));
-            // ObjectProperty header
         } catch (Exception ex) {
             System.out.println("Error1: " + ex.getMessage());
         }
         try {
             edtp_part_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename_edtp_part), "UTF-8"));
-            // DatatypeProperty header
         } catch (Exception ex) {
             System.out.println("Error1: " + ex.getMessage());
         }
