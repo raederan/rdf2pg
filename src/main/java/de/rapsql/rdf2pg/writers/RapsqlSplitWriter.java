@@ -50,21 +50,21 @@ public class RapsqlSplitWriter implements PGWriter {
     lines.add(line);
   }
 
-  // private String getNodeProperties (PGNode node, Integer oid){
-  //   int cnt = 0;
-  //   String props = "";
-  //   Iterator<PGProperty> it = node.getProperties();
-  //   while (it.hasNext()) {
-  //     PGProperty prop = it.next();
-  //     cnt++;
-  //     if (cnt < node.propertiesCounter()) {
-  //       props = props + "n" + oid + "." + prop.getLabel() + "='" + prop.getValue() + "'" + " AND ";
-  //     } else {
-  //       props = props + "n" + oid + "." + prop.getLabel() + "='" + prop.getValue() + "'";
-  //     }
-  //   }
-  //   return props;
-  // }
+  private String getNodeProperties(PGNode node, Integer oid) {
+    int cnt = 0;
+    String props = "";
+    Iterator<PGProperty> it = node.getProperties();
+    while (it.hasNext()) {
+      PGProperty prop = it.next();
+      cnt++;
+      if (cnt < node.propertiesCounter()) {
+        props = props + "n" + oid + "." + prop.getLabel() + "='" + prop.getValue() + "'" + " AND ";
+      } else {
+        props = props + "n" + oid + "." + prop.getLabel() + "='" + prop.getValue() + "'";
+      }
+    }
+    return props;
+  }
 
   @Override
   public void begin() {
@@ -113,11 +113,12 @@ public class RapsqlSplitWriter implements PGWriter {
     if(props.compareTo("")==0) {
       // line = "CREATE (n" + labels + ")\n";
       // line = "MERGE (n" +  node.getId() + labels + ")\n";
-      line = "MERGE (n" +  node.getId() + labels + ")";
+      // line = "MERGE (n" +  node.getId() + labels + ")";
+      line = "CREATE (n" +  node.getId() + labels + ")";
     } else {
       // line = "CREATE (n" + labels +  " {" + props + "} )\n";
       // line = "MERGE (n" +  node.getId() + labels +  " {" + props + "} )\n";
-      line = "MERGE (n" +  node.getId() + labels +  " {" + props + "} )";
+      line = "CREATE (n" +  node.getId() + labels +  " {" + props + "} )";
     }
     this.writeLine(line);
     // System.out.println("\n" + line);
@@ -170,26 +171,26 @@ public class RapsqlSplitWriter implements PGWriter {
     snode_oid = edge.getSourceNode();
     tnode_oid = edge.getTargetNode();
 
-    // PGNode snode = nodemap.get(snode_oid);
-    // PGNode tnode = nodemap.get(tnode_oid);
+    PGNode snode = nodemap.get(snode_oid);
+    PGNode tnode = nodemap.get(tnode_oid);
 
     // switch case for snode.propertiesCounter() and tnode.propertiesCounter()
     // if both are 0, then no need to use WHERE clause
     // if one of them is 0, then use WHERE clause for the other one
     // if both are not 0, then use WHERE clause for both of them
-    // Boolean snode_props = snode.emptyProperties();
-    // Boolean tnode_props = tnode.emptyProperties();
-    // String where_clause = "";
+    Boolean snode_props = snode.emptyProperties();
+    Boolean tnode_props = tnode.emptyProperties();
+    String where_clause = "";
 
-    // if (!snode_props && !tnode_props) {
-    //     where_clause = "WHERE " + getNodeProperties(snode, snode_oid) + " AND " + getNodeProperties(tnode, tnode_oid) + " ";
-    // } else if (!snode_props && tnode_props) {
-    //     where_clause = "WHERE " + getNodeProperties(snode, snode_oid) + " ";
-    // } else if (!tnode_props && snode_props) {
-    //     where_clause = "WHERE " + getNodeProperties(tnode, tnode_oid) + " ";
-    // } else {
-    //     where_clause = "";
-    // }
+    if (!snode_props && !tnode_props) {
+        where_clause = "WHERE " + getNodeProperties(snode, snode_oid) + " AND " + getNodeProperties(tnode, tnode_oid) + " ";
+    } else if (!snode_props && tnode_props) {
+        where_clause = "WHERE " + getNodeProperties(snode, snode_oid) + " ";
+    } else if (!tnode_props && snode_props) {
+        where_clause = "WHERE " + getNodeProperties(tnode, tnode_oid) + " ";
+    } else {
+        where_clause = "";
+    }
 
 
     // CREATE (a)-[r:RELTYPE]->(b)
@@ -198,15 +199,17 @@ public class RapsqlSplitWriter implements PGWriter {
       line =
             // "MATCH (n" + snode_oid + ":" + snode.getLabel() + "), (n" + tnode_oid + ":" + tnode.getLabel() + ") "
             // + where_clause 
+            // + "\n";
             "MERGE (n" + snode_oid
             + ")-[e" + edge_id + labels + "]->(n" + tnode_oid
             + ")";
             // + "\n";
+            System.out.println("NO PROPS:" + line);
     } else {
       line =
-            // "MATCH (n" + snode_oid + ":" + snode.getLabel() + "), (n" + tnode_oid + ":" + tnode.getLabel() + ") " 
-            // + where_clause
-            "MERGE (n" + snode_oid
+            "MATCH (n" + snode_oid + ":" + snode.getLabel() + "), (n" + tnode_oid + ":" + tnode.getLabel() + ") " 
+            + where_clause + " "
+            + "CREATE (n" + snode_oid
             + ")-[e" + edge_id + ":" + extractName(props)
             + " {" + props + "}]->(n" + tnode_oid
             + ")";

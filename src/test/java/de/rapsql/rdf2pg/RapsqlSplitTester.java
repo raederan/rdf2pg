@@ -62,21 +62,32 @@ public class RapsqlSplitTester {
     
     /////////// TEST runModelMapping4 Model input ///////////
     String inputFileName = "src/test/resources/spcustom.n3";
-    System.out.println("RapsqlWriter2: gdm -> runModelMapping");
+    System.out.println("RapsqlSplitWriter: gdm -> runModelMapping");
     RapsqlSplitWriter instance_pgwriter = new RapsqlSplitWriter();
     GenericMapping gdm = new GenericMapping();
     Model rdf_model = gdm.runModelMapping4(inputFileName, instance_pgwriter);
     ArrayList<String> lines;
     lines = instance_pgwriter.getLines();
 
-    System.out.println("Model:\n" + rdf_model + "\n");
+    System.out.println("Model:\n" + rdf_model.numPrefixes() + "\n");
 
     System.out.println("\nInstance_by_line:");
     // print single lines
+    Integer cnt = 0;
+    // String observe = ")-[e";
+    // String observe = ":BlankNode";
+    // String observe = "booktitle";
+    // String observe = "creator";
+    String observe = "WHERE";
     for (String line : lines) {
+      // if (line.contains(observe)){
+      // // if (line.contains(":Resource")||line.contains(":BlankNode")||line.contains(":Literal")){
+      //   cnt++;
+      //   System.out.println(line);
+      // }
       System.out.println(line);
     }
-
+    System.out.println("Lines: " + cnt);
 
 
 
