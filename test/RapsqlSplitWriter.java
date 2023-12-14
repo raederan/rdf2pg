@@ -77,35 +77,35 @@ public class RapsqlSplitWriter implements PGWriter{
         try {
             nres_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename_nres), "UTF-8"));
             // Resource header
-            this.writeLine("id,iri\n", "Resource");
+            this.writeLine("id,rdfid\n", "Resource");
         } catch (Exception ex) {
             System.out.println("Error1: " + ex.getMessage());
         }
         try {
             nlit_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename_nlit), "UTF-8"));
             // Literal header
-            this.writeLine("id,value,type\n", "Literal");
+            this.writeLine("id,rdfid\n", "Literal");
         } catch (Exception ex) {
             System.out.println("Error1: " + ex.getMessage());
         }
         try {
             nbn_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename_nbn), "UTF-8"));
             // BlankNode header
-            this.writeLine("id,bnid\n", "BlankNode");
+            this.writeLine("id,rdfid\n", "BlankNode");
         } catch (Exception ex) {
             System.out.println("Error1: " + ex.getMessage());
         }
         try {
             eop_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename_eop), "UTF-8"));
             // ObjectProperty header
-            this.writeLine("start_id,start_vertex_type,end_id,end_vertex_type,iri\n", "ObjectProperty");
+            this.writeLine("start_id,start_vertex_type,end_id,end_vertex_type,rdfid\n", "ObjectProperty");
         } catch (Exception ex) {
             System.out.println("Error1: " + ex.getMessage());
         }
         try {
             edtp_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename_edtp), "UTF-8"));
             // DatatypeProperty header
-            this.writeLine("start_id,start_vertex_type,end_id,end_vertex_type,iri\n", "DatatypeProperty");
+            this.writeLine("start_id,start_vertex_type,end_id,end_vertex_type,rdfid\n", "DatatypeProperty");
         } catch (Exception ex) {
             System.out.println("Error1: " + ex.getMessage());
         }

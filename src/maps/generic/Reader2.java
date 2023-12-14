@@ -57,7 +57,7 @@ public class Reader2 implements StreamRDF {
             if (s.isURI()) {
                 snode = new PGNode(oid++);
                 snode.addLabel("Resource");
-                snode.addProperty("iri", s.getURI());
+                snode.addProperty("rdfid", s.getURI());
             } else if(s.isBlank()) {
                 snode = new PGNode(oid++);
                 snode.addLabel("BlankNode");
@@ -76,31 +76,35 @@ public class Reader2 implements StreamRDF {
                 if (o.isURI()) {
                     tnode = new PGNode(oid++);
                     tnode.addLabel("Resource");
-                    tnode.addProperty("iri", o.getURI());
+                    tnode.addProperty("rdfid", o.getURI());
                 } else {
                     tnode = new PGNode(oid++);
                     tnode.addLabel("BlankNode");
-                    tnode.addProperty("bnid", o.getBlankNodeId().toString()); 
+                    tnode.addProperty("rdfid", o.getBlankNodeId().toString()); 
                 }
                 hash_node_map.put(o.hashCode(), tnode);
                 pgwriter.writeNode(tnode);
             }
             PGEdge edge = new PGEdge(oid++,snode.getId(),tnode.getId());
             edge.addLabel("ObjectProperty");
-            edge.addProperty("iri", p.getURI());
+            edge.addProperty("rdfid", p.getURI());
             pgwriter.writeEdge(edge);
         } else {
             //the object is a literal 
             PGNode tnode = new PGNode(oid++);
             tnode.addLabel("Literal");
             // fix literal for special type
-            tnode.addProperty("value", o.getLiteral().getLexicalForm()); 
-            tnode.addProperty("type", o.getLiteral().getDatatypeURI());
+            // rdfid: value^^type (ign String)
+            if (o.getLiteral().getDatatypeURI().equals(org.apache.jena.datatypes.xsd.XSDDatatype.XSDstring.getURI())) {
+                tnode.addProperty("rdfid", o.getLiteral().getLexicalForm());
+            } else {
+                tnode.addProperty("rdfid", o.getLiteral().getLexicalForm() + "^^" + o.getLiteral().getDatatypeURI());
+            }
             pgwriter.writeNode(tnode);
             
             PGEdge edge = new PGEdge(oid++,snode.getId(),tnode.getId());
             edge.addLabel("DatatypeProperty");
-            edge.addProperty("iri", p.getURI());
+            edge.addProperty("rdfid", p.getURI());
             pgwriter.writeEdge(edge);
         }
     }

@@ -25,8 +25,7 @@ hs_err_pid*
 # others
 temp/
 /build/
-# /dist/
-/dist/
+/dist*
 /target/
 migration
 .vscode
