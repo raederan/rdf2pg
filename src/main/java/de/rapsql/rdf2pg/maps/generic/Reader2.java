@@ -70,7 +70,7 @@ public class Reader2 implements StreamRDF {
             if (s.isURI()) {
                 snode = new PGNode(oid++);
                 snode.addLabel("Resource");
-                snode.addProperty("iri", s.getURI());
+                snode.addProperty("rdfid", s.getURI());
 
                 rdf_str += s.getURI() + "\n";
             } else if(s.isBlank()) {
@@ -78,9 +78,9 @@ public class Reader2 implements StreamRDF {
                 snode.addLabel("BlankNode");
                 // get blanknode id directly instead of hashcode
                 // String id = "_:b" + s.hashCode();
-                // System.out.println("DEBUG BN SUB bnid: " + s.getBlankNodeId().toString());
+                // System.out.println("DEBUG BN SUB rdfid: " + s.getBlankNodeId().toString());
                 // System.out.println("DEBUG BN SUB bnLbl: " + s.getBlankNodeLabel());
-                snode.addProperty("bnid", s.getBlankNodeId().toString());
+                snode.addProperty("rdfid", s.getBlankNodeId().toString());
 
                 rdf_str += "_:" + s.getBlankNodeId().toString() + " ";
             } else{
@@ -97,7 +97,7 @@ public class Reader2 implements StreamRDF {
                 if (o.isURI()) {
                     tnode = new PGNode(oid++);
                     tnode.addLabel("Resource");
-                    tnode.addProperty("iri", o.getURI());
+                    tnode.addProperty("rdfid", o.getURI());
 
                     rdf_str += "_:" + o.getURI() + " ";
                 } else {
@@ -105,8 +105,7 @@ public class Reader2 implements StreamRDF {
                     tnode.addLabel("BlankNode");
                     // get blanknode id directly instead of hashcode
                     // String id = "_:b" + o.hashCode();
-                    // System.out.println("DEBUG BN OBJ bnid: " + o.getBlankNodeId().toString());
-                    tnode.addProperty("bnid", o.getBlankNodeId().toString());
+                    tnode.addProperty("rdfid", o.getBlankNodeId().toString());
 
                     rdf_str += o.getBlankNodeId().toString() + "\n";
                 }
@@ -116,7 +115,7 @@ public class Reader2 implements StreamRDF {
             }
             PGEdge edge = new PGEdge(oid++,snode.getId(),tnode.getId());
             edge.addLabel("ObjectProperty");
-            edge.addProperty("iri", p.getURI());
+            edge.addProperty("rdfid", p.getURI());
             pgwriter.writeEdge(edge);
 
             rdf_str += p.getURI() + " ";
@@ -125,16 +124,17 @@ public class Reader2 implements StreamRDF {
             //the object is a literal 
             PGNode tnode = new PGNode(oid++);
             tnode.addLabel("Literal");
-            // tnode.addProperty("value", o.getLiteral().getValue().toString()); // does not work for special type
-            tnode.addProperty("value", o.getLiteral().getLexicalForm()); // fix for special type
-            // System.out.println("DEBUG TYPE Literal value string: " + o.getLiteral().getValue().toString());
-            // System.out.println("DEBUG TYPE Literal lexform: " + o.getLiteral().getLexicalForm());
-            tnode.addProperty("type", o.getLiteral().getDatatypeURI());
+            // rdfid: value^^type (ign String)
+            if (o.getLiteral().getDatatypeURI().equals(org.apache.jena.datatypes.xsd.XSDDatatype.XSDstring.getURI())) {
+                tnode.addProperty("rdfid", o.getLiteral().getLexicalForm());
+            } else {
+                tnode.addProperty("rdfid", o.getLiteral().getLexicalForm() + "^^" + o.getLiteral().getDatatypeURI());
+            }
             pgwriter.writeNode(tnode);
             
             PGEdge edge = new PGEdge(oid++,snode.getId(),tnode.getId());
             edge.addLabel("DatatypeProperty");
-            edge.addProperty("iri", p.getURI());
+            edge.addProperty("rdfid", p.getURI());
             pgwriter.writeEdge(edge);
 
             // rdf_str += o.getLiteral().getLexicalForm() + "^^" + o.getLiteral().getDatatypeURI() + " .";
