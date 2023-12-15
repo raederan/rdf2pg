@@ -77,35 +77,35 @@ public class RapsqlSplitWriter implements PGWriter{
         try {
             nres_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename_nres), "UTF-8"));
             // Resource header
-            this.writeLine("id,rdfid\n", "Resource");
+            this.writeLine("id,iri\n", "Resource");
         } catch (Exception ex) {
             System.out.println("Error1: " + ex.getMessage());
         }
         try {
             nlit_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename_nlit), "UTF-8"));
             // Literal header
-            this.writeLine("id,rdfid\n", "Literal");
+            this.writeLine("id,value,type\n", "Literal");
         } catch (Exception ex) {
             System.out.println("Error1: " + ex.getMessage());
         }
         try {
             nbn_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename_nbn), "UTF-8"));
             // BlankNode header
-            this.writeLine("id,rdfid\n", "BlankNode");
+            this.writeLine("id,bnid\n", "BlankNode");
         } catch (Exception ex) {
             System.out.println("Error1: " + ex.getMessage());
         }
         try {
             eop_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename_eop), "UTF-8"));
             // ObjectProperty header
-            this.writeLine("start_id,start_vertex_type,end_id,end_vertex_type,rdfid\n", "ObjectProperty");
+            this.writeLine("start_id,start_vertex_type,end_id,end_vertex_type,iri\n", "ObjectProperty");
         } catch (Exception ex) {
             System.out.println("Error1: " + ex.getMessage());
         }
         try {
             edtp_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename_edtp), "UTF-8"));
             // DatatypeProperty header
-            this.writeLine("start_id,start_vertex_type,end_id,end_vertex_type,rdfid\n", "DatatypeProperty");
+            this.writeLine("start_id,start_vertex_type,end_id,end_vertex_type,iri\n", "DatatypeProperty");
         } catch (Exception ex) {
             System.out.println("Error1: " + ex.getMessage());
         }
@@ -158,12 +158,13 @@ public class RapsqlSplitWriter implements PGWriter{
             oid++;
         }
         
-        String labels = "";
-        Iterator<String> it1 = node.getLabels();
-        while (it1.hasNext()) {
-            String label = it1.next();
-            labels = label + labels + ",id";
-        }
+        // String labels = "";
+        // Iterator<String> it1 = node.getLabels();
+        // while (it1.hasNext()) {
+        //     String label = it1.next();
+        //     labels = label + labels + ",id";
+        //     System.out.println("Label: " + labels);
+        // }
 
         int cnt = 0;
         String props = "";
@@ -200,12 +201,13 @@ public class RapsqlSplitWriter implements PGWriter{
             oid++;
         }
         
-        String labels = "";
-        Iterator<String> it1 = edge.getLabels();
-        while (it1.hasNext()) {
-            String label = it1.next();
-            labels = labels + "" + label;
-        }
+        // String labels = "";
+        // Iterator<String> it1 = edge.getLabels();
+        // while (it1.hasNext()) {
+        //     String label = it1.next();
+        //     labels = labels + "" + label;
+        //     System.out.println("Label: " + labels);
+        // }
 
         int cnt = 0;
         String props = "";
@@ -245,7 +247,7 @@ public class RapsqlSplitWriter implements PGWriter{
                     + snode.getLabel() + ","
                     + tnode_oid + ","
                     + tnode.getLabel() + ","
-                    + labels + "\n";
+                    + edge.getLabel() + "\n";
         } else {
             line = snode_oid + ","
                     + snode.getLabel() + ","
@@ -255,13 +257,13 @@ public class RapsqlSplitWriter implements PGWriter{
         }
 
         // add unique edge iri's to list and write to file
-        if (!edge_iri_list.contains(props)) {
-            edge_iri_list.add(props);
-            this.writeLine(props + "\n", labels + "Part");
-            // System.out.println("Edge IRI: " + props);
-            // System.out.println("Edge Label: " + labels);
-        }
-        this.writeLine(line, labels);
+        // if (!edge_iri_list.contains(props)) {
+        //     edge_iri_list.add(props);
+        //     this.writeLine(props + "\n", edge.getLabel() + "Part");
+        //     // System.out.println("Edge IRI: " + props);
+        //     // System.out.println("Edge Label: " + labels);
+        // }
+        this.writeLine(line, edge.getLabel());
     }
 
     @Override

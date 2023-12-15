@@ -32,3 +32,5 @@ migration
 src/test/resources
 *.csv
 *.n3
+edtp*
+eop*
