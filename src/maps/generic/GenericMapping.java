@@ -99,48 +99,48 @@ public class GenericMapping {
 
             PGNode rnode = new PGNode(1);
             rnode.addLabel("Resource");
-            rnode.addProperty("iri", "String");
+            rnode.addProperty("rdfid", "String");
             pgwriter.writeNode(rnode);
             
             PGNode bnode = new PGNode(2);
             bnode.addLabel("BlankNode");
-            bnode.addProperty("bnid", "String");
+            bnode.addProperty("rdfid", "String");
             pgwriter.writeNode(bnode);
 
             PGNode lnode = new PGNode(3);
             lnode.addLabel("Literal");
-            lnode.addProperty("value", "String");
+            lnode.addProperty("rdfid", "String");
             lnode.addProperty("type", "String");
             pgwriter.writeNode(lnode);
             
             PGEdge edge4 = new PGEdge(4,rnode.getId(),rnode.getId());
             edge4.addLabel("ObjectProperty");
-            edge4.addProperty("iri","String");
+            edge4.addProperty("rdfid","String");
             pgwriter.writeEdge(edge4);
 
             PGEdge edge5 = new PGEdge(5,rnode.getId(),bnode.getId());
             edge5.addLabel("ObjectProperty");
-            edge5.addProperty("iri","String");
+            edge5.addProperty("rdfid","String");
             pgwriter.writeEdge(edge5);
             
             PGEdge edge6 = new PGEdge(6,bnode.getId(),rnode.getId());
             edge6.addLabel("ObjectProperty");
-            edge6.addProperty("iri","String");
+            edge6.addProperty("rdfid","String");
             pgwriter.writeEdge(edge6);
 
             PGEdge edge7 = new PGEdge(7,bnode.getId(),bnode.getId());
             edge7.addLabel("ObjectProperty");
-            edge7.addProperty("iri","String");
+            edge7.addProperty("rdfid","String");
             pgwriter.writeEdge(edge7);
             
             PGEdge edge8 = new PGEdge(8,rnode.getId(),lnode.getId());
             edge8.addLabel("DatatypeProperty");
-            edge8.addProperty("iri","String");
+            edge8.addProperty("rdfid","String");
             pgwriter.writeEdge(edge8);
 
             PGEdge edge9 = new PGEdge(9,bnode.getId(),lnode.getId());
             edge9.addLabel("DatatypeProperty");
-            edge9.addProperty("iri","String");
+            edge9.addProperty("rdfid","String");
             pgwriter.writeEdge(edge9);
             
             pgwriter.end();

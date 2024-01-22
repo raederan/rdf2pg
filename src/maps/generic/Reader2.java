@@ -57,11 +57,11 @@ public class Reader2 implements StreamRDF {
             if (s.isURI()) {
                 snode = new PGNode(oid++);
                 snode.addLabel("Resource");
-                snode.addProperty("iri", s.getURI());
+                snode.addProperty("rdfid", s.getURI());
             } else if(s.isBlank()) {
                 snode = new PGNode(oid++);
                 snode.addLabel("BlankNode");
-                snode.addProperty("bnid", s.getBlankNodeId().toString());
+                snode.addProperty("rdfid", s.getBlankNodeId().toString());
             } else{
                 System.out.println("Error in Reader2.java");
                 System.out.println("Invalid triple");
@@ -76,31 +76,31 @@ public class Reader2 implements StreamRDF {
                 if (o.isURI()) {
                     tnode = new PGNode(oid++);
                     tnode.addLabel("Resource");
-                    tnode.addProperty("iri", o.getURI());
+                    tnode.addProperty("rdfid", o.getURI());
                 } else {
                     tnode = new PGNode(oid++);
                     tnode.addLabel("BlankNode");
-                    tnode.addProperty("bnid", o.getBlankNodeId().toString()); 
+                    tnode.addProperty("rdfid", o.getBlankNodeId().toString()); 
                 }
                 hash_node_map.put(o.hashCode(), tnode);
                 pgwriter.writeNode(tnode);
             }
             PGEdge edge = new PGEdge(oid++,snode.getId(),tnode.getId());
             edge.addLabel("ObjectProperty");
-            edge.addProperty("iri", p.getURI());
+            edge.addProperty("rdfid", p.getURI());
             pgwriter.writeEdge(edge);
         } else {
             //the object is a literal 
             PGNode tnode = new PGNode(oid++);
             tnode.addLabel("Literal");
             // fix literal for special type
-            tnode.addProperty("value", o.getLiteral().getLexicalForm()); 
+            tnode.addProperty("rdfid", o.getLiteral().getLexicalForm()); 
             tnode.addProperty("type", o.getLiteral().getDatatypeURI());
             pgwriter.writeNode(tnode);
             
             PGEdge edge = new PGEdge(oid++,snode.getId(),tnode.getId());
             edge.addLabel("DatatypeProperty");
-            edge.addProperty("iri", p.getURI());
+            edge.addProperty("rdfid", p.getURI());
             pgwriter.writeEdge(edge);
         }
     }
