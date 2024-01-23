@@ -78,7 +78,7 @@ public class RapsqlSplitTester {
     // String observe = ":BlankNode";
     // String observe = "booktitle";
     // String observe = "creator";
-    String observe = "WHERE";
+    // String observe = "WHERE";
     for (String line : lines) {
       // if (line.contains(observe)){
       // // if (line.contains(":Resource")||line.contains(":BlankNode")||line.contains(":Literal")){

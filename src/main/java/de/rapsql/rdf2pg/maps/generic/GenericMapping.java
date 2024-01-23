@@ -214,7 +214,7 @@ public class GenericMapping {
             lnode.addLabel("Literal");
             // change to rdfid: value^^type (ign String)
             lnode.addProperty("rdfid", "String");
-            // lnode.addProperty("type", "String");
+            lnode.addProperty("type", "String");
             pgwriter.writeNode(lnode);
             
             PGEdge edge4 = new PGEdge(4,rnode.getId(),rnode.getId());

@@ -124,12 +124,14 @@ public class Reader2 implements StreamRDF {
             //the object is a literal 
             PGNode tnode = new PGNode(oid++);
             tnode.addLabel("Literal");
-            // rdfid: value^^type (ign String)
-            if (o.getLiteral().getDatatypeURI().equals(org.apache.jena.datatypes.xsd.XSDDatatype.XSDstring.getURI())) {
-                tnode.addProperty("rdfid", o.getLiteral().getLexicalForm());
-            } else {
-                tnode.addProperty("rdfid", o.getLiteral().getLexicalForm() + "^^" + o.getLiteral().getDatatypeURI());
-            }
+            tnode.addProperty("rdfid", o.getLiteral().getLexicalForm());
+            tnode.addProperty("type", o.getLiteral().getDatatypeURI());
+            // // rdfid: value^^type (ign String)
+            // if (o.getLiteral().getDatatypeURI().equals(org.apache.jena.datatypes.xsd.XSDDatatype.XSDstring.getURI())) {
+            //     tnode.addProperty("rdfid", o.getLiteral().getLexicalForm());
+            // } else {
+            //     tnode.addProperty("rdfid", o.getLiteral().getLexicalForm() + "^^" + o.getLiteral().getDatatypeURI());
+            // }
             pgwriter.writeNode(tnode);
             
             PGEdge edge = new PGEdge(oid++,snode.getId(),tnode.getId());
