@@ -22,10 +22,10 @@
 
   <groupId>de.rapsql.rdf2pg</groupId>
   <artifactId>rdf2pg</artifactId>
-  <version>v0.1.0</version>
+  <version>v0.3.0</version>
 
+  <description>RDF2PG Model yars</description>
   <name>rdf2pg</name>
-  <!-- FIXME change it to the project's website -->
   <url>http://www.rapsql.de</url>
 
   <properties>
