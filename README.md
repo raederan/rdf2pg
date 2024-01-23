@@ -10,12 +10,21 @@ rdf2pg implements three transformation methods described in the journal article
 
 - [rdf2pg](#rdf2pg)
   - [Project Description](#project-description)
+  - [Primary Branches](#primary-branches)
   - [Authors and Acknowledgment](#authors-and-acknowledgment)
   - [License](#license)
 
 ## Project Description
 
-This project transforms RDF datasets into a CSV files for futher parsing and mass uploading rdf-like property graph data into [rapsql databases](https://github.com/OpenSemanticLab/rapsql), which builds on [Postgres](https://www.postgresql.org/) and [Apache AGE](https://age.apache.org/). A possible use case for [OpenSemanticLab](https://github.com/OpenSemanticLab).
+This project transforms RDF datasets into a CSV files for futher parsing and mass uploading rdf-like property graph data into [rapsql databases](https://github.com/OpenSemanticLab/rapsql), which build on [Postgres](https://www.postgresql.org/) and [Apache AGE](https://age.apache.org/). A possible use case for [OpenSemanticLab](https://github.com/OpenSemanticLab).
+
+## Primary Branches
+
+- `main` -- Basic modifications from forked repository to briefly inform about the project.
+- `maven-migration` -- Maven migration for dependency management of `RAPSQLTranspiler` and Testing following the YARS property graph model.
+- `maven-rdfid` -- Maven migration for dependency management of `RAPSQLTranspiler` and Testing following a generalized property name called `rdfid` within the property graph model.
+- `yars` -- Distribution of `RDF2PG` in combination with `RAPSQLTranspiler` for `RAPSQLBench` testing using the YARS property graph model.
+- `rdfid` -- Distribution of `RDF2PG` in combination with `RAPSQLTranspiler` for `RAPSQLBench` testing using the generalized property name `rdfid` within the property graph model.
 
 ## Authors and Acknowledgment
 
