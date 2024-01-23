@@ -28,7 +28,7 @@ This project transforms RDF datasets into a CSV files for futher parsing and mas
 
 ## Authors and Acknowledgment
 
-Thanks to Prof. Renzo Angles et al. it is possible to have a basement to develop an important feature of `rapsql`.
+Thanks to Renzo Angles et al. for providing a basement to develop an important feature of `RAPSQL`.
 It is a fork of [renzoar/rdf2pg](https://github.com/renzoar/rdf2pg/tree/master/src).
 
 ## License
