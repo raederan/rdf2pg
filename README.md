@@ -1,4 +1,4 @@
-# rdf2pg
+# RDF2PG
 
 A java application to transform RDF databases into Property Graph (PG) databases.
 rdf2pg implements three transformation methods described in the journal article
@@ -8,20 +8,28 @@ rdf2pg implements three transformation methods described in the journal article
 <!-- markdownlint-disable-next-line MD036 -->
 **Table of Contents**
 
-- [rdf2pg](#rdf2pg)
+- [RDF2PG](#rdf2pg)
   - [Project Description](#project-description)
-  - [Authors and Acknowledgment](#authors-and-acknowledgment)
+  - [Repositories](#repositories)
   - [License](#license)
+  - [Acknowledgment and Authors](#acknowledgment-and-authors)
 
 ## Project Description
 
-This project transforms RDF datasets into a CSV files for futher parsing and mass uploading rdf-like property graph data into [rapsql databases](https://github.com/OpenSemanticLab/rapsql), which builds on [Postgres](https://www.postgresql.org/) and [Apache AGE](https://age.apache.org/). A possible use case for [OpenSemanticLab](https://github.com/OpenSemanticLab).
+This project transforms RDF datasets into a CSV files for futher parsing, mass uploading RDF-like property graph data into RAPSQL Databases, which build on [Postgres](https://www.postgresql.org/) and [Apache AGE](https://age.apache.org/). RAPSQL Databases are in development for possible backend solutions of [OpenSemanticLab](https://github.com/OpenSemanticLab), which builds on [JSON Schema](https://json-schema.org/), [Semantic Media Wiki](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki) focuses on Ontology-Interoperability.
 
-## Authors and Acknowledgment
+## Repositories
 
-Thanks to Prof. Renzo Angles et al. it is possible to have a basement to develop an important feature of `rapsql`.
-It is a fork of [renzoar/rdf2pg](https://github.com/renzoar/rdf2pg/tree/master/src).
+- [RAPSQLTranspiler](https://github.com/OpenSemanticWorld/rapsqltranspiler)
+- [RAPSQLBench](https://github.com/OpenSemanticWorld/rapsqlbench)
 
 ## License
 
-This project is licenced under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+Apache License 2.0
+
+## Acknowledgment and Authors
+
+Thanks to Renzo Angles et al. it is possible to have a basement to develop an essential feature of `RAPSQL`.
+It is a fork of [renzoar/rdf2pg](https://github.com/renzoar/rdf2pg/tree/master/src).
+
+Andreas Räder (<https://github.com/raederan>)
