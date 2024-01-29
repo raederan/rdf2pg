@@ -27,7 +27,6 @@ This project transforms RDF datasets into a CSV files for futher parsing, mass u
 4. Move `test` to `src/test/java/rapsql/rdf2pg`
 5. Add and change `import` and `package` statements for each java file
 
-
 ## Repositories
 
 - [RAPSQLTranspiler](https://github.com/OpenSemanticWorld/rapsqltranspiler)
