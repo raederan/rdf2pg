@@ -1,3 +1,4 @@
+_backup
 # Compiled class file
 *.class
 
@@ -31,3 +32,5 @@ temp/
 migration
 .vscode
 src/test/resources
+*.csv
+*.n3
