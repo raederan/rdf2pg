@@ -1,3 +1,4 @@
+_backup
 # Compiled class file
 *.class
 
@@ -25,8 +26,11 @@ hs_err_pid*
 # others
 temp/
 /build/
-/dist*
+# /dist/
+/dist/
 /target/
 migration
 .vscode
 src/test/resources
+*.csv
+*.n3
