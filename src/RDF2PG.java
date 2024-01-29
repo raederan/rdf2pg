@@ -19,6 +19,9 @@
 */
 
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import maps.complete.CompleteMapping;
 import maps.generic.GenericMapping;
 import maps.simple.SimpleMapping;
@@ -30,6 +33,7 @@ public class RDF2PG {
         long itime;
         long etime;
         BasicConfigurator.configure(); //to avoid log4j warning
+        Logger.getRootLogger().setLevel(Level.OFF);   
         System.out.println("rdf2pg");
         System.out.println("Java app to transform an RDF database into a Property Graph database (i.e. schema and instance data).");
         if (args.length == 2) {
