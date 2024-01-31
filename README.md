@@ -29,7 +29,6 @@ Apache License 2.0
 
 ## Acknowledgment and Authors
 
-Thanks to Angles et al. it is possible to have a basement for an essential feature of `RAPSQL`.
-It is a fork of [renzoar/rdf2pg](https://github.com/renzoar/rdf2pg/tree/master/src).
+Thanks to Angles et al. it is possible to have a basis for an essential component of RAPSQL. It is a fork of [renzoar/rdf2pg](https://github.com/renzoar/rdf2pg/tree/master/src).
 
 Andreas Räder (<https://github.com/raederan>)
