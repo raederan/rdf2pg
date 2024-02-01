@@ -16,7 +16,7 @@ rdf2pg implements three transformation methods described in the journal article
 
 ## Project Description
 
-This project converts RDF datasets to CSV files for further parsing and uploads RDF-like property graphs to RAPSQL databases built on [Postgres](https://www.postgresql.org/) and [Apache AGE](https://age.apache.org/). RAPSQL databases are under development for possible backend solutions of [OpenSemanticLab](https://github.com/OpenSemanticLab), which builds on [JSON Schema](https://json-schema.org/) and [Semantic Media Wiki](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki) with a focus on ontology interoperability.
+This project converts RDF datasets to CSV files for further parsing and uploads RDF-like property graphs to RAPSQL databases built on [Postgres](https://www.postgresql.org/) and [Apache AGE](https://age.apache.org/). RAPSQL databases are under development for possible backend solutions of [OpenSemanticLab](https://github.com/OpenSemanticLab), which builds on [JSON Schema](https://json-schema.org/) and [Semantic Media Wiki](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki) with a focus on semantic applications.
 
 ## Repositories
 
