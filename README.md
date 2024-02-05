@@ -16,7 +16,7 @@ rdf2pg implements three transformation methods described in the journal article
 
 ## Project Description
 
-This project transforms RDF datasets into a CSV files for futher parsing, mass uploading RDF-like property graph data into RAPSQL Databases, which build on [Postgres](https://www.postgresql.org/) and [Apache AGE](https://age.apache.org/). RAPSQL Databases are in development for possible backend solutions of [OpenSemanticLab](https://github.com/OpenSemanticLab), which builds on [JSON Schema](https://json-schema.org/), [Semantic Media Wiki](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki) focuses on Ontology-Interoperability.
+This project converts RDF-serialised data into to CSV files in yars format. Furthermore it parses and uploads RDF-like property graphs to RAPSQL databases built on [Postgres](https://www.postgresql.org/) and [Apache AGE](https://age.apache.org/). RAPSQL databases are under development for possible backend solutions of [OpenSemanticLab](https://github.com/OpenSemanticLab), which builds on [JSON Schema](https://json-schema.org/) and [Semantic Media Wiki](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki) with a focus on semantic applications.
 
 ## Repositories
 
@@ -29,7 +29,6 @@ Apache License 2.0
 
 ## Acknowledgment and Authors
 
-Thanks to Renzo Angles et al. it is possible to have a basement to develop an essential feature of `RAPSQL`.
-It is a fork of [renzoar/rdf2pg](https://github.com/renzoar/rdf2pg/tree/master/src).
+Thanks to Angles et al. it is possible to have a basis for an essential component of RAPSQL. It is a fork of [renzoar/rdf2pg](https://github.com/renzoar/rdf2pg/tree/master/src).
 
 Andreas Räder (<https://github.com/raederan>)
