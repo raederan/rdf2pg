@@ -16,7 +16,7 @@ rdf2pg implements three transformation methods described in the journal article
 
 ## Project Description
 
-This project converts RDF-serialised data into to CSV files in yars format. Furthermore it parses and uploads RDF-like property graphs to RAPSQL databases built on [Postgres](https://www.postgresql.org/) and [Apache AGE](https://age.apache.org/). RAPSQL databases are under development for possible backend solutions of [OpenSemanticLab](https://github.com/OpenSemanticLab), which builds on [JSON Schema](https://json-schema.org/) and [Semantic Media Wiki](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki) with a focus on semantic applications.
+This project provides syntactic data interoperability for rapsqltranspiler in yars format. Furthermore it provides the data for futher parsing and uploading steps of RDF-like property graphs to target RAPSQL databases built on [Postgres](https://www.postgresql.org/) and [Apache AGE](https://age.apache.org/). RAPSQL databases are under development for possible backend solutions of [OpenSemanticLab](https://github.com/OpenSemanticLab), which builds on [JSON Schema](https://json-schema.org/) and [Semantic Media Wiki](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki) with a focus on semantic applications.
 
 ## Repositories
 
